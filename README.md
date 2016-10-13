@@ -5,7 +5,7 @@ the application will also allow you to refine your search result with more keywo
 
 
 ## Screenshot
-![Alt text](/productsSearch/ScreenShot .png?raw=true "Screenshot")
+![Alt text](https://github.com/asenousy/productsSearch/blob/master/ScreenShot.png .png?raw=true "Screenshot")
 
 
 ## Strategies
