@@ -70,7 +70,7 @@ the products are listed in JSON by worksById as you see below where each ID cont
 
 ## Load JSON file
 
-we use XMLHttpRequest and as soom as its ready the responseText property returns the JSON as a text string which we can convert to a Json object using JSON.parse
+we use XMLHttpRequest and as soon as its ready the responseText property returns the JSON as a text string which we can convert to a Json object using JSON.parse
 
 ```
 // load the json file
