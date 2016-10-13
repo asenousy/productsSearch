@@ -5,7 +5,7 @@ the application will also allow you to refine your search result with more keywo
 
 
 ## Screenshot
-![Alt text](https://github.com/asenousy/productsSearch/blob/master/ScreenShot.png)
+!Alt text](https://github.com/asenousy/productsSearch/blob/master/ScreenShot.png)
 
 
 ## Strategies
@@ -93,9 +93,9 @@ when searching for a product you would expect the top of the result to list the 
 ```
 if (!isDuplicate(productAray, productsID[i])) {					
 	productAray.push({"ID":productsID[i], "Product":TitleText.toUpperCase(), "Hits":1});
-					} else {
-						productAray[productAray.length-1]["Hits"]+= 1;
-						}
+} else {
+	productAray[productAray.length-1]["Hits"]+= 1;
+}
 ```
 
 
@@ -117,3 +117,6 @@ for (var i = 0; i < resultArray.length; i++) {
 }
 document.getElementById("tableBody").innerHTML=tableData;
 ```
+
+
+
