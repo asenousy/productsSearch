@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<!-- This Web application uses a JSON file as a data source to display of all the product titles and gives the ability to search for a product based on product title,
+the application will also allow you to refine your search result with more keywords entered -->
+<html> 
+<!-- Bootstrap CDN -->
+<head> 
+	<meta charset="utf-8">
+	<title>ProductSearch</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<!-- Navigation Bar with input Textbox and a search and clear buttons -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<form class="navbar-form navbar-left">
+				<div class="form-group">
+					<input id="textbox" type="text" class="form-control" placeholder="Search" onkeypress="handle(event)">
+					<button type="button" class="btn btn-default" onclick="searchKeyWords()">Search</button>
+					<button type="button" class="btn btn-link" onclick="clearButton()">clear</button>
+				</div>
+			</form>
+		</div>
+	</nav>
+	
+	<!-- 	Table to be filled with the Search results -->
+	<div class="container-fluid">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+			<tbody id="tableBody">
+			</tbody>
+		</table>
+	</div>
+</body>
+
+<script>
+	var jsonObject;
+	
+	// load the json file
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4) {
+			var objects = JSON.parse(this.responseText);
+			myFunction(objects);
+		}
+	};
+	var url = "ELSIO-Graph.json";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+	
+	// handle an enter key stroke to star a search
+	function handle(e){
+		if(e.keyCode === 13){
+			e.preventDefault();
+			searchKeyWords();
+		}
+	}
+	
+	// function called as soon as json data is loaded, to trigger the search function with an empty textbox which will list all products
+	function myFunction(objects) {
+		jsonObject = objects;
+		searchKeyWords();
+	}
+	
+	// empty the textbox when clear button pressed and list all products
+	function clearButton() {
+		document.getElementById("textbox").value="";;
+		searchKeyWords();
+	}
+	
+	// called when search button is pressed to read the textbox and fill the table with the result and using the Hits key to list results
+	function searchKeyWords() {
+		if (jsonObject != null) {
+			var input = document.getElementById("textbox").value;
+			var inputArray = input.split(" "); // split the string into an array of seperate substrings, to search for each keyword seperately
+			var resultArray = searchTitle(jsonObject, inputArray);
+				
+			// sort the result according to their Hits value, with the higher hits on top
+			resultArray.sort(function(a, b){return b["Hits"] - a["Hits"]});
+				
+			// fill the table with the sorted results
+			var tableData="";
+			for (var i = 0; i < resultArray.length; i++) {
+				tableData +='<tr><td>'+resultArray[i]["ID"]+'</td><td>'+resultArray[i]["Product"]+'</td></tr>';
+			}
+			document.getElementById("tableBody").innerHTML=tableData;
+			
+		} else {
+			alert("No Data");
+		}
+	}
+	
+	// finds the Json keys with the requested titles and counts number of matches storing them in Hits tag and returns a new json list with the products matched
+	function searchTitle(obj, searchArray)
+	{
+		var productAray = [];
+		var productsID =  Object.keys(obj["worksById"]); // list all keys (IDs)
+		
+		// loop through each workID 
+		for (var i = 0; i < productsID.length; i++) {
+			var ID = obj["worksById"][productsID[i]];
+			var Title = ID["Title"];
+			var TitleText = Title["TitleText"];
+			
+			// loop through each keyword to check if it exists in Title
+			for (var j = 0; j < searchArray.length; j++) {
+				
+				// check for matches
+				if (TitleText.toUpperCase().includes(searchArray[j].toUpperCase())) {
+					
+					// first check if it already exists in our result list, if not then add it, but of not then just increment the Hits tag
+					if (!isDuplicate(productAray, productsID[i])) {
+						
+						productAray.push({"ID":productsID[i], "Product":TitleText.toUpperCase(), "Hits":1});
+					} else {
+						
+						productAray[productAray.length-1]["Hits"]+= 1;
+					}
+				}
+			}
+		}
+		return productAray;
+	};
+	
+	// check if product ID aleady exists returning true or false
+	function isDuplicate(array, product)
+	{
+		for (var i = 0; i < array.length; i++) {
+			if (array[i]["ID"] == product) {
+				return true;
+			}
+		}
+		return false;
+	}
+</script>
+</html>
+
