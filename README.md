@@ -102,7 +102,7 @@ first we extract all the IDs in the JSON into an array as below
 var productsID =  Object.keys(obj["worksById"]); // list all keys (IDs)
 ```
 
-then we end up with two arrays, an ID list and a keywords list, so using 2 for loops, we iterate and compare till we find a match
+then we end up with two arrays, an ID list and a keywords list, so using 2 for loops, we iterate and compare till we find a match, once a match is found we add the product details into a new JSON array created, ignore the Hits tag for now will explain later
 
 ```
 function searchTitle(obj, searchArray)
@@ -134,8 +134,6 @@ function searchTitle(obj, searchArray)
 	return productAray;
 };
 ```
-
-once a match is found we add the product details into a new JSON array created, ignore the Hits tag for now will explain later
 
 
 ## Refine search result
