@@ -42,7 +42,6 @@ the products are listed in JSON by worksById as you see below where each ID cont
 			
 			...
 			...
-
 			
 	"9780000001962": {
         "NotificationType": "03",
