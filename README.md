@@ -148,7 +148,7 @@ result will look like this
 	{"ID":"9780030031298" , "Title":"Fundamentals of Chemistry" , "Hits":"1"}]
 ```
 
-so if a match took place then the product details is inserted into our list, but if its already there then increment the Hits tag to records how many keywords it contains
+so if a match took place then the product details is inserted into our list, but if its already there, then increment the Hits value to records how many keywords it contains
 
 ```
 if (!isDuplicate(productAray, productsID[i])) {					
@@ -161,7 +161,7 @@ if (!isDuplicate(productAray, productsID[i])) {
 
 ## Fill the Table
 
-once we have the result list, we need to sort it using the Hits value, so that the product with the highest Hits is listed on top and the product with the lowest Hits is listed in bottom
+once we have the result list, we need to sort it using the Hits value, so that the product with the highest Hits is listed on top and the product with the lowest Hits is listed in bottom, the sort() method compares each two values in the Array and sorts them according to the returned (negative, zero, positive) value, for more reading on how this function works check out http://www.w3schools.com/jsref/jsref_sort.asp
 
 
 ```
