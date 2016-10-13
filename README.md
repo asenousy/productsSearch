@@ -15,6 +15,59 @@ the application will also allow you to refine your search result with more keywo
 3. refine the search result
 4. fill table with result
 
+### JSON File
+
+the products are listed in JSON by worksById as you see below where each ID contains many product details, our focus will be to the "TitleText" which is inside "Title" key
+
+```
+"worksById": {
+    "9780000001306": {
+        "NotificationType": "03",
+        "ProductIdentifier": [
+            {
+                "ProductIDType": "03",
+                "IDValue": "9780000001306"
+            },
+            {
+                "ProductIDType": "15",
+                "IDValue": "9780000001306"
+            }
+        ],
+        "Barcode": "03",
+        "ProductForm": "BC",
+        "Title": {
+            "TitleType": "01",
+            "TitleText": "CAM Testing: BJ Migration patch 1 2011..."
+			},
+			
+			...
+			...
+
+			
+	"9780000001962": {
+        "NotificationType": "03",
+        "ProductIdentifier": [
+            {
+                "ProductIDType": "03",
+                "IDValue": "9780000001962"
+            },
+            {
+                "ProductIDType": "15",
+                "IDValue": "9780000001962"
+            }
+        ],
+        "Barcode": "03",
+        "ProductForm": "BC",
+        "Title": {
+            "TitleType": "01",
+            "TitleText": "migration testing EW interface 10.5 - NOV sara",
+            "Subtitle": "Nov sara"
+			},
+			
+			...
+			...
+```
+
 
 ## Load JSON file
 
@@ -72,7 +125,7 @@ function searchTitle(obj, searchArray)
 					
 				// first check if it already exists in our result list, if not then add it, but of not then just increment the Hits tag
 				if (!isDuplicate(productAray, productsID[i])) {	
-					productAray.push({"ID":productsID[i], "Product":TitleText.toUpperCase(), "Hits":1});
+					productAray.push({"ID":productsID[i], "Title":TitleText.toUpperCase(), "Hits":1});
 			} else {		
 					productAray[productAray.length-1]["Hits"]+= 1;
 				}
@@ -88,11 +141,21 @@ once a match is found we add the product details into a new JSON array created, 
 
 ## Refine search result
 
-when searching for a product you would expect the top of the result to list the title which contains the most keywords you entered and and the product with the least keywords at the bottom, to do this I added a key called Hits, which records the amount of matches a particular product contains as seen below, so if a match took place then the product details is inserted into our list, but if its already there then increment the Hits tag to records how many keywords it contains
+when searching for a product you would expect the top of the result to list the title which contains the most keywords you entered and and the product with the least keywords at the bottom, to do this I added a key called Hits, which records the amount of matches a particular product contains as seen below
+
+```
+result will look like this
+= [{"ID":"9780000001306" , "Title":"CAM Testing: BJ Migration patch 1 2011" , "Hits":"2"},
+	{"ID":"9780000001962" , "Title":"migration testing EW interface 10.5 - NOV sara" , "Hits":"1"},
+	{"ID":"9780012752159" , "Title":"SEMICONDUCTORS & SEMIMETALS V21D" , "Hits":"3"},
+	{"ID":"9780030031298" , "Title":"Fundamentals of Chemistry" , "Hits":"1"}]
+```
+
+so if a match took place then the product details is inserted into our list, but if its already there then increment the Hits tag to records how many keywords it contains
 
 ```
 if (!isDuplicate(productAray, productsID[i])) {					
-	productAray.push({"ID":productsID[i], "Product":TitleText.toUpperCase(), "Hits":1});
+	productAray.push({"ID":productsID[i], "Title":TitleText.toUpperCase(), "Hits":1});
 } else {
 	productAray[productAray.length-1]["Hits"]+= 1;
 }
@@ -113,7 +176,7 @@ Finally we fill the table with the new sorted list
 ```
 var tableData="";
 for (var i = 0; i < resultArray.length; i++) {
-	tableData +='<tr><td>'+resultArray[i]["ID"]+'</td><td>'+resultArray[i]["Product"]+'</td></tr>';
+	tableData +='<tr><td>'+resultArray[i]["ID"]+'</td><td>'+resultArray[i]["Title"]+'</td></tr>';
 }
 document.getElementById("tableBody").innerHTML=tableData;
 ```
